@@ -1,0 +1,6 @@
+require "min.options"
+require "min.plugins"
+require "min.colorscheme"
+require "min.lsp"
+require "min.null-ls"
+require "min.git-signs"
