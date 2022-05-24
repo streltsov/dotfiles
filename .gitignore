@@ -1,0 +1,15 @@
+/*
+
+# .gitignore
+!/.gitignore
+
+# Xmonad
+!/.xmonad
+/.xmonad/*
+!/.xmonad/xmonad.hs
+
+!/.config
+/.config/*
+
+# Neovim
+!/.config/nvim
