@@ -17,4 +17,11 @@
 # Neovim
 !/.config/nvim
 
+# Termite
 !/.config/termite
+
+# Ranger
+!.config/ranger
+/.config/ranger/*
+!/.config/ranger/rifle.conf
+
