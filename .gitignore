@@ -25,3 +25,7 @@
 /.config/ranger/*
 !/.config/ranger/rifle.conf
 
+# MPV
+!/.config/mpv
+/.config/mpv/*
+!/.config/mpv/mpv.conf
