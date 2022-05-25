@@ -8,6 +8,8 @@
 /.xmonad/*
 !/.xmonad/xmonad.hs
 
+!/.zshrc
+
 !/.config
 /.config/*
 
