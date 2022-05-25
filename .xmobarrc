@@ -1,0 +1,79 @@
+Config { 
+         font     =   "xft: Operator Mono :size=9:antialias=true"
+       , bgColor  = "#2b2a33"
+       , fgColor  = "#ebdbb2"
+       , alpha    = 255
+       , position = TopP 0 0
+       , allDesktops = True
+       , commands = [ 
+
+                      Run MultiCpu [
+                               "--template" , "CPU:<total>"
+                             , "--Low"      , "50"         -- units: %
+                             , "--High"     , "85"         -- units: %
+                             , "--low"      , "#b8bb26"
+                             , "--normal"   , "orange"
+                             , "--high"     , "#fb4934"
+                             , "--ppad"     , "2"
+                             , "--suffix"   , "True"
+                             ] 10
+
+                    , Run MultiCoreTemp ["-t", "Temp:<avg>°C",
+                               "-L", "60", "-H", "80"
+                             , "-l", "green", "-n", "yellow", "-h", "red"
+                             , "--", "--mintemp", "20", "--maxtemp", "100"] 50
+
+                    , Run Memory [
+                               "--template" ,"RAM:<usedratio>"
+                             , "--Low"      , "60"        -- units: %
+                             , "--High"     , "90"        -- units: %
+                             , "--low"      , "#b8bb26"
+                             , "--normal"   , "orange"
+                             , "--high"     , "#fb4934"
+                             , "--ppad"     , "2"
+                             , "--suffix"   , "True"
+                             ] 10
+
+                    , Run Battery [ 
+                               "--template" , "<acstatus><left>"
+                             , "--Low"      , "10"        -- units: %
+                             , "--High"     , "80"        -- units: %
+                             , "--low"      , "#fb4934"
+                             , "--normal"   , "orange"
+                             , "--high"     , "#b8bb26"
+                             , "--ppad"     , "2"
+                             , "--suffix"   , "True"
+                             , "--" -- battery specific options
+                                       -- discharging status
+                                       , "-o"	, "Bat:"
+                                       -- AC "on" status
+                                       , "-O"	, "<fc=#b8bb26>AC:</fc>"
+                                       -- charged status
+                                       , "-i"	, "<fc=#83a598> Chrd </fc>"
+                             ] 10
+                    , Run Network "wlp4s0" [
+                               "-t","<rx> <tx>"
+                             , "--Low"      , "1000"       -- units: B/s
+                             , "--High"     , "5000"       -- units: B/s
+                             , "--low"      , "#b8bb26"
+                             , "--normal"   , "#b8bb26"
+                             , "--high"     , "#b8bb26"
+                             ] 10
+                    , Run Network "enp3s0" ["-L","0","-H","1000","--normal","white","--high","#b8bb26"] 10
+                    , Run Wireless "wlp4s0" ["-t","<essid>[<quality>]","-L","30","--low","#fb4934"] 50
+                    , Run DiskU [("/home", "SSD: <free>")] [
+                               "--Low"      , "0"
+                             , "--High"     , "20"
+                             , "--low"      , "#fb4934"
+                             , "--normal"   , "#b8bb26"
+                             , "--high"     , "#b8bb26"
+                             ] 10
+                    , Run Kbd [("us", "US"), ("ru(winkeys)", "RU")]
+                    , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+                    ]
+
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "%multicpu% %multicoretemp% %memory% %disku% %battery% <fc=#83a598>%enp3s0%</fc> <fc=#83a598>%wlp4s0wi%:</fc>%wlp4s0% }\
+                    \{<fc=#b8bb26></fc> %kbd% || <fc=#fb4934>%date%</fc>"
+       }

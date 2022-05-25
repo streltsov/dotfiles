@@ -9,6 +9,7 @@
 !/.xmonad/xmonad.hs
 
 !/.zshrc
+!/.xmobarrc
 
 !/.config
 /.config/*
