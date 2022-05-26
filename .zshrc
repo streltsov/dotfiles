@@ -117,7 +117,7 @@ alias rmorphans='sudo pacman -Rns $(pacman -Qtdq)'
 alias fbtofbzip="find . -name '*.fb2' -print -exec zip '{}'.zip '{}' \; -exec rm '{}' \;"
 alias webcam='mpv av://v4l2:/dev/video0'
 alias wifi-menu='sudo wifi-menu'
-alias backl='sudo nvim /sys/class/backlight/amdgpu_bl0/brightness'
+alias backl='sudo vim /sys/class/backlight/amdgpu_bl0/brightness'
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias chillmeup='mpv --no-video https://www.youtube.com/watch\?v\=5qap5aO4i9A --volume=40'
 alias chilldrive='mpv --no-video https://www.youtube.com/watch\?v\=2R0J1EN5hu0 --volume=40'
