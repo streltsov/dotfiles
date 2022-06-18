@@ -22,7 +22,7 @@ myManageHook = composeAll
 main = do
       xmonad $ ewmh $ docks $ defaultConfig {
           modMask               = mod4Mask
-        , terminal              = "termite"
+        , terminal              = "alacritty"
         , focusedBorderColor    = "#665c54"
         , normalBorderColor     = "#000000"
         , borderWidth           = 1
