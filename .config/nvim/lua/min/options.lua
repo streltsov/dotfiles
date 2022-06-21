@@ -32,3 +32,5 @@ vim.opt.swapfile = false                        -- creates a swapfile
 vim.opt.undofile = true                         -- enable persistent undo
 vim.opt.updatetime = 100                        -- faster completion (4000ms default)
 vim.opt.laststatus = 3
+-- Experimental
+vim.opt.showmatch = true
