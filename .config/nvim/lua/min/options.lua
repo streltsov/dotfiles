@@ -10,6 +10,14 @@ augroup neovim_terminal
 augroup END
 ]])
 
+-- Fix problems before save
+vim.cmd([[
+augroup fix_before_save
+  autocmd!
+  autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
+augroup end
+]])
+
 vim.opt.termguicolors = true
 vim.cmd [[au BufEnter * set fo-=c fo-=r fo-=o]] -- don't auto comment new lines
 vim.opt.showmode = false                        -- Do not show mode

@@ -54,11 +54,17 @@ lspconfig.tsserver.setup{
     flags = lsp_flags,
 } 
 
-lspconfig.purescriptls.setup{
-    on_attach = on_attach,
-    flags = lsp_flags,
-}
 
 lspconfig.eslint.setup{}
-lspconfig.sumneko_lua.setup {}
 
+lspconfig.purescriptls.setup {
+   -- Your personal on_attach function referenced before to include
+   -- keymaps & other ls options
+  on_attach = on_attach,
+  settings = {
+    purescript = {
+      addSpagoSources = true -- e.g. any purescript language-server config here
+    }
+  },
+  flags = flags
+}
