@@ -4,6 +4,7 @@ local lspconfig = require("lspconfig")
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
+
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
@@ -15,9 +16,13 @@ local on_attach = function(client, bufnr)
   client.server_capabilities.documentFormattingProvider = false
   client.server_capabilities.documentRangeFormattingProvider = false
 
-  -- Deprecated (resolved_capabilities)
-  -- client.resolved_capabilities.document_formatting = false
-  -- client.resolved_capabilities.document_range_formatting = false        
+  vim.diagnostic.config({
+    virtual_text = false,
+    update_in_insert = true,
+    severity_sort = true,
+    underline = { severity = vim.diagnostic.severity.ERROR, }
+  })
+
   -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -41,30 +46,15 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
 end
 
-local lsp_flags = {
-  -- This is the default in Nvim 0.7+
-  debounce_text_changes = 150,
-}
-
 lspconfig.html.setup{}
 lspconfig.cssls.setup{}
 
 lspconfig.tsserver.setup{
     on_attach = on_attach,
-    flags = lsp_flags,
 } 
-
 
 lspconfig.eslint.setup{}
 
 lspconfig.purescriptls.setup {
-   -- Your personal on_attach function referenced before to include
-   -- keymaps & other ls options
   on_attach = on_attach,
-  settings = {
-    purescript = {
-      addSpagoSources = true -- e.g. any purescript language-server config here
-    }
-  },
-  flags = flags
 }
