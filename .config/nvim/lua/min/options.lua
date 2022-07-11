@@ -11,12 +11,15 @@ augroup END
 ]])
 
 -- Fix problems before save
+-- autocmd BufWritePre,TextChanged,InsertLeave *.js Neoformat
 vim.cmd([[
 augroup fix_before_save
   autocmd!
-  autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
+  autocmd BufWritePre,TextChanged,InsertLeave *.tsx,*.ts,*.jsx,*.js Neoformat
 augroup end
 ]])
+
+-- nnoremap gp :silent %!prettier --stdin-filepath %<CR>
 
 vim.opt.termguicolors = true
 vim.cmd [[au BufEnter * set fo-=c fo-=r fo-=o]] -- don't auto comment new lines

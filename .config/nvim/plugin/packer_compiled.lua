@@ -74,6 +74,16 @@ _G.packer_plugins = {
     path = "/home/streltsov/.local/share/nvim/site/pack/packer/start/gruvbox.nvim",
     url = "https://github.com/ellisonleao/gruvbox.nvim"
   },
+  neoformat = {
+    loaded = true,
+    path = "/home/streltsov/.local/share/nvim/site/pack/packer/start/neoformat",
+    url = "https://github.com/sbdchd/neoformat"
+  },
+  ["nvim-cmp"] = {
+    loaded = true,
+    path = "/home/streltsov/.local/share/nvim/site/pack/packer/start/nvim-cmp",
+    url = "https://github.com/hrsh7th/nvim-cmp"
+  },
   ["nvim-lspconfig"] = {
     loaded = true,
     path = "/home/streltsov/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
