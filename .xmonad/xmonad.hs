@@ -31,17 +31,16 @@ main = do
                                             } `additionalKeys` [
 
         -- Apps and tools
-          ((mod4Mask, xK_f),                   spawn "firefox")
+            ((mod4Mask, xK_f),                   spawn "firefox")
           , ((mod4Mask, xK_n),                   spawn "~/.firefox-nightly/firefox")
           , ((mod4Mask, xK_c),                   spawn "chromium")
-          , ((mod4Mask, xK_d),                   spawn "goldendict")
           , ((mod4Mask, xK_v),                   spawn "pavucontrol")
 
           , ((mod4Mask, xK_u), broadcastMessage ToggleMonitor >> refresh)
         -- Special commands
           , ((mod4Mask, xK_End),                 spawn "poweroff")
           , ((mod4Mask .|. shiftMask, xK_End),   spawn "reboot")
-          , ((0, xK_Print),                      spawn "maim -u | tee ~/pics/screenshots/$(date +%s).png | xclip -selection clipboard -t image/png")
+          , ((0, xK_Print),                      spawn "maim -u | tee ~/my-pics/screenshots/$(date +%s).png | xclip -selection clipboard -t image/png")
           , ((mod4Mask, xK_m),                   spawn "maim -s -u | xclip -selection clipboard -t image/png -i")
           , ((mod4Mask, xK_x),                   spawn "slock")
 
