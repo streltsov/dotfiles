@@ -26,8 +26,9 @@ return packer.startup(function(use)
   use "nvim-lua/plenary.nvim"                                    -- Useful lua functions used ny lots of plugins
   use "neovim/nvim-lspconfig"                                    -- enable LSP
   use "ellisonleao/gruvbox.nvim"                                 -- Gruvbox lua ported colorscheme
-  use "hrsh7th/nvim-cmp"
   use "sbdchd/neoformat"
+  use "hrsh7th/nvim-cmp"
+  use "hrsh7th/cmp-nvim-lsp"
 
   if PACKER_BOOTSTRAP then
     require("packer").sync()

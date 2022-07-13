@@ -15,7 +15,7 @@ augroup END
 vim.cmd([[
 augroup fix_before_save
   autocmd!
-  autocmd BufWritePre,TextChanged,InsertLeave *.tsx,*.ts,*.jsx,*.js Neoformat
+  autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js Neoformat
 augroup end
 ]])
 

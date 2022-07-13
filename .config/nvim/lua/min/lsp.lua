@@ -46,11 +46,16 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
 end
 
+
+-- Setup lspconfig.
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
 lspconfig.html.setup{}
 lspconfig.cssls.setup{}
 
 lspconfig.tsserver.setup{
     on_attach = on_attach,
+    capabilities = capabilities,
 } 
 
 lspconfig.eslint.setup{}

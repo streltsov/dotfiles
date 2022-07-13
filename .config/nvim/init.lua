@@ -1,4 +1,5 @@
 require "min.options"
 require "min.plugins"
 require "min.colorscheme"
+require "min.completion"
 require "min.lsp"
