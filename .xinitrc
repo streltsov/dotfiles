@@ -6,7 +6,7 @@ redshift -l 52.7:41.4 -t 5700:3600 -g 0.8 &
 # clight &
 transmission-daemon &
 batnot &
-# ~/.the-knowledge-garden/scripts/push-to-repo.sh
+~/.the-knowledge-garden/scripts/push-to-repo.sh
 xmobar &
 
 exec xmonad
