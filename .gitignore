@@ -18,6 +18,9 @@
 # Neovim
 !/.config/nvim
 
+# Clight
+!/.config/clight.conf
+
 # Termite
 !/.config/termite
 
