@@ -3,6 +3,9 @@
 # .gitignore
 !/.gitignore
 
+# Alacritty
+!/.alacritty.yml
+
 # Xmonad
 !/.xmonad
 /.xmonad/*
