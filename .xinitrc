@@ -5,6 +5,7 @@ setxkbmap -layout us,ru -variant ,winkeys -option grp:alt_shift_toggle -option c
 # [[ -f ~/.Xmodmap ]] && xmodmap ~/.Xmodmap &
 unclutter --timeout 1 --jitter 10 --ignore-scrolling &
 redshift -l 52.7:41.4 -t 5700:3600 -g 0.8 &
+clight &
 transmission-daemon &
 batnot &
 xmobar &
