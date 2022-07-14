@@ -106,6 +106,7 @@ export QT_QPA_PLATFORMTHEME=qt5ct
 PATH="$HOME/.node_modules/bin:$PATH"
 export npm_config_prefix=~/.node_modules
 export PATH="$HOME/.local/bin:$PATH"
+export PATH=$PATH:~/.my-scripts
 
 #Vi style
 #set -o vi
