@@ -3,6 +3,9 @@
 # .gitignore
 !/.gitignore
 
+# My Scripts
+!/.my-scripts
+
 # Alacritty
 !/.alacritty.yml
 

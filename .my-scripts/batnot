@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# low battery in %
+LOW_BATTERY="15"
+# critical battery in % (execute action)
+CRITICAL_BATTERY="10"
+# action
+ACTION="systemctl suspend"
+# path to battery /sys
+BATTERY_PATH="/sys/class/power_supply/BAT1/"
+
+while true
+do
+if [ -e "$BATTERY_PATH" ]; then
+    BATTERY_ON=$(cat $BATTERY_PATH/status)
+
+    if [ "$BATTERY_ON" == "Discharging" ]; then
+        CURRENT_BATTERY=$(cat $BATTERY_PATH/capacity)
+
+        if [ "$CURRENT_BATTERY" -lt "$CRITICAL_BATTERY" ]; then
+		$($ACTION)
+
+        elif [ "$CURRENT_BATTERY" -lt "$LOW_BATTERY" ]; then
+		echo "Battery is low - $CURRENT_BATTERY %" | dzen2 -p 60 -fg yellow; sleep 10
+        fi      
+    fi
+fi
+sleep 300
+done
