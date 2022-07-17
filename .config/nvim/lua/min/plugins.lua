@@ -29,6 +29,7 @@ return packer.startup(function(use)
   use "sbdchd/neoformat"
   use "hrsh7th/nvim-cmp"
   use "hrsh7th/cmp-nvim-lsp"
+  use "lewis6991/gitsigns.nvim"
 
   if PACKER_BOOTSTRAP then
     require("packer").sync()
