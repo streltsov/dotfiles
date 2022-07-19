@@ -18,4 +18,4 @@ end
 vim.cmd [[highlight IndentBlanklineIndent1 guifg=NONE guibg=NONE gui=nocombine]]
 vim.cmd [[highlight IndentBlanklineIndent2 guifg=NONE guibg=#282828 gui=nocombine]]
 
-vim.o.background = "light"
+-- vim.o.background = "light"
