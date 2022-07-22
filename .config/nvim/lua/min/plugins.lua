@@ -24,12 +24,17 @@ end
 return packer.startup(function(use)
   use "wbthomason/packer.nvim"                                   -- Have packer manage itself
   use "nvim-lua/plenary.nvim"                                    -- Useful lua functions used ny lots of plugins
+  use "nvim-treesitter/nvim-treesitter"
+
   use "neovim/nvim-lspconfig"                                    -- enable LSP
   use "ellisonleao/gruvbox.nvim"                                 -- Gruvbox lua ported colorscheme
   use "sbdchd/neoformat"
   use "hrsh7th/nvim-cmp"
   use "hrsh7th/cmp-nvim-lsp"
   use "lewis6991/gitsigns.nvim"
+
+  use "nvim-telescope/telescope.nvim"
+  use "BurntSushi/ripgrep"
 
   if PACKER_BOOTSTRAP then
     require("packer").sync()
