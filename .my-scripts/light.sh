@@ -4,6 +4,9 @@
 #######  LIGHT  #######
 #######################
 
+# System
+sed -i 's/-Dark//' .xsettingsd && xsettingsd & pkill xsettingsd
+
 # Alacritty
 PATH_TO_ALLACRITTY_CONF=~/.alacritty.yml
 sed -i "$(wc -l < $PATH_TO_ALLACRITTY_CONF)s/dark/light/" $PATH_TO_ALLACRITTY_CONF
