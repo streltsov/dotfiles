@@ -34,7 +34,7 @@ return packer.startup(function(use)
   use "lewis6991/gitsigns.nvim"
 
   use "nvim-telescope/telescope.nvim"
-  use "BurntSushi/ripgrep"
+  use "BurntSushi/ripgrep"                                       --  required for Telescope's "live_grep" and "grep_string"
 
   if PACKER_BOOTSTRAP then
     require("packer").sync()
