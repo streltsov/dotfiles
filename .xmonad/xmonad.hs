@@ -36,6 +36,9 @@ main = do
           , ((mod4Mask, xK_c),                   spawn "chromium")
           , ((mod4Mask, xK_v),                   spawn "pavucontrol")
 
+          , ((mod4Mask, xK_w),                   spawn "~/.my-scripts/light.sh")
+          , ((mod4Mask, xK_d),                   spawn "~/.my-scripts/dark.sh")
+
           , ((mod4Mask, xK_u), broadcastMessage ToggleMonitor >> refresh)
         -- Special commands
           , ((mod4Mask, xK_End),                 spawn "poweroff")
