@@ -15,9 +15,10 @@ augroup END
 vim.cmd([[
 augroup fix_before_save
   autocmd!
-  autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js Neoformat
+  autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js Neoformat prettiereslint
 augroup end
 ]])
+
 
 -- nnoremap gp :silent %!prettier --stdin-filepath %<CR>
 
