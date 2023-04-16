@@ -1,5 +1,5 @@
 Config { 
-         font     =   "xft: Operator Mono :size=9:antialias=true"
+         font     = "Operator Mono Medium 11"
        , bgColor  = "#2b2a33"
        , fgColor  = "#ebdbb2"
        , alpha    = 255

@@ -1,7 +1,9 @@
-require "min.options"
-require "min.plugins"
-require "min.colorscheme"
-require "min.completion"
-require "min.lsp"
-require "min.gitsigns"
-require "min.mappings"
+require("min.options")
+require("min.telescope")
+require("min.plugins")
+require("min.colorscheme")
+require("min.lsp")
+require("min.gitsigns")
+require("min.mappings")
+require("min.trouble")
+require("min.completion")

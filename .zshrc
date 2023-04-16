@@ -125,3 +125,4 @@ alias chillmeup='mpv --no-video https://www.youtube.com/watch\?v\=5qap5aO4i9A --
 alias chilldrive='mpv --no-video https://www.youtube.com/watch\?v\=2R0J1EN5hu0 --volume=40'
 alias grep='grep --colour=auto'
 alias tojxl='find . -type f -regextype sed -regex ".*[^jxl|mp4]" -exec sh -c 'cjxl -q 100 {} "${0%.*}.jxl"' {} \;'
+alias mountfa='sudo mount -t vfat -ouser,umask=0000'

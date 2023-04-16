@@ -7,6 +7,5 @@ redshift -l 52.7:41.4 -t 5700:3600 -g 0.8 &
 transmission-daemon &
 batnot &
 xmobar &
-/home/streltsov/.the-knowledge-garden/scripts/push-to-repo.sh &
 
 exec xmonad
