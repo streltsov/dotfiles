@@ -10,8 +10,8 @@ myManageHook = composeAll
 
 main = do
   xmonad $ ewmh $ docks $ def {
-      modMask               = mod1Mask
-    , terminal              = "st"
+      modMask               = mod4Mask
+    , terminal              = "alacritty"
     , focusedBorderColor    = "#665c54"
     , normalBorderColor     = "#000000"
     , borderWidth           = 1
