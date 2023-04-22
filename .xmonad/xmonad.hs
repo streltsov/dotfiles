@@ -4,12 +4,14 @@ import XMonad.Layout.Spacing
 import XMonad.Layout.NoBorders
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.EwmhDesktops
+import XMonad.Actions.GroupNavigation
+
 
 myManageHook = composeAll
   [ className =? "TelegramDesktop" --> doShift "7" ]
 
 main = do
-  xmonad $ ewmh $ docks $ def {
+  xmonad $ ewmh $ docks $ def { logHook = historyHook } {
       modMask               = mod4Mask
     , terminal              = "alacritty"
     , focusedBorderColor    = "#665c54"
@@ -25,6 +27,6 @@ main = do
     , ((mod4Mask, xK_x),                spawn "slock")
 
     -- Layout bindings
+    , ((mod4Mask, xK_Tab), nextMatch History (return True))
     , ((mod4Mask, xK_b), sendMessage ToggleStruts)
     ]
-
