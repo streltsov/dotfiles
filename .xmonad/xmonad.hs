@@ -7,8 +7,10 @@ import XMonad.Hooks.EwmhDesktops
 import XMonad.Actions.GroupNavigation
 
 
-myManageHook = composeAll
-  [ className =? "TelegramDesktop" --> doShift "7" ]
+myManageHook = composeAll [
+      className =? "TelegramDesktop" --> doShift "7"
+    , className =? "obsidian"        --> doShift "9"
+  ]
 
 main = do
   xmonad $ ewmh $ docks $ def {  
