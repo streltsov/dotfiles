@@ -5,6 +5,7 @@ import XMonad.Layout.NoBorders
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Actions.GroupNavigation
+import Graphics.X11.ExtraTypes.XF86
 
 
 myManageHook = composeAll [
@@ -28,6 +29,13 @@ main = do
     , ((mod4Mask, xK_n),                spawn "~/.firefox-nightly/firefox")
     , ((mod4Mask, xK_v),                spawn "pavucontrol")
     , ((mod4Mask, xK_x),                spawn "slock")
+
+    , ((0, xF86XK_AudioMute),           spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
+    , ((0, xF86XK_AudioRaiseVolume),    spawn "pactl set-sink-volume @DEFAULT_SINK@ +5%")
+    , ((0, xF86XK_AudioLowerVolume),    spawn "pactl set-sink-volume @DEFAULT_SINK@ -5%")
+
+    , ((0, xF86XK_MonBrightnessUp),   spawn "brightnessctl set +5%")
+    , ((0, xF86XK_MonBrightnessDown), spawn "brightnessctl set 5%-")
 
     -- Layout bindings
     , ((mod4Mask, xK_Tab), nextMatch History (return True))
