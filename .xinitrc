@@ -1,5 +1,6 @@
 # xautolock -detectsleep -time 3 -locker "slock" -notify 30 -notifier "echo ('LOCKING screen in 30 seconds'; sleep 10) | dzen2 -bg black -fg white -fn fixed" &
 
+x-on-resize -c ~/.my-scripts/hdmi-script &
 batnot &
 telegram &
 obsidian &
