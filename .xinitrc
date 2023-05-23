@@ -6,8 +6,8 @@ telegram-desktop &
 obsidian &
 transmission-daemon &
 unclutter --timeout 1 --jitter 10 --ignore-scrolling &
-redshift -l 52.7:41.4 -t 5700:3600 -g 0.8 &
 setxkbmap -layout us,ru -variant ,winkeys -option grp:alt_shift_toggle -option ctrl:nocaps &
+redshift -l 52.71:11.97 -t 5700:3600 -g 0.8 &
 xmobar &
 
 exec xmonad

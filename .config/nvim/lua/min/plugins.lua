@@ -40,6 +40,9 @@ return packer.startup(function(use)
   -- use("jose-elias-alvarez/typescript.nvim")
   use("folke/trouble.nvim")
 
+  use("vimwiki/vimwiki")
+  use("mattn/calendar-vim")
+
   use("lukas-reineke/indent-blankline.nvim")
   use("dcampos/nvim-snippy")
   use({

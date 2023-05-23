@@ -74,6 +74,11 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
+  ["calendar-vim"] = {
+    loaded = true,
+    path = "/home/streltsov/.local/share/nvim/site/pack/packer/start/calendar-vim",
+    url = "https://github.com/mattn/calendar-vim"
+  },
   ["cmp-buffer"] = {
     loaded = true,
     path = "/home/streltsov/.local/share/nvim/site/pack/packer/start/cmp-buffer",
@@ -158,6 +163,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/streltsov/.local/share/nvim/site/pack/packer/start/trouble.nvim",
     url = "https://github.com/folke/trouble.nvim"
+  },
+  vimwiki = {
+    loaded = true,
+    path = "/home/streltsov/.local/share/nvim/site/pack/packer/start/vimwiki",
+    url = "https://github.com/vimwiki/vimwiki"
   }
 }
 
