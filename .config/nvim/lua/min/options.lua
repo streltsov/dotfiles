@@ -21,19 +21,3 @@ vim.opt.laststatus = 3
 -- Experimental
 vim.opt.mouse = ""
 vim.opt.showmatch = true
-
-vim.g.vimwiki_auto_chdir = 1
-vim.g.vimwiki_list = {
-    {
-     path = '~/.the-knowledge-garden',
-     index = 'chaos-sanctuary',
-     syntax = 'markdown',
-     ext = '.md',
-     diary_rel_path = 'daily-notes/',
-     diary_index = 'index',
-     }
-}
---    \ 'template_path': '~/path/to/your/vimwiki/templates/',
---    \ 'template_default': 'default',
-
-

@@ -3,7 +3,6 @@
 x-on-resize -c ~/.my-scripts/hdmi-script &
 batnot &
 telegram-desktop &
-obsidian &
 transmission-daemon &
 unclutter --timeout 1 --jitter 10 --ignore-scrolling &
 setxkbmap -layout us,ru -variant ,winkeys -option grp:alt_shift_toggle -option ctrl:nocaps &
