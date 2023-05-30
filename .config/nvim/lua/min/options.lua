@@ -18,6 +18,7 @@ vim.opt.swapfile = false -- creates a swapfile
 vim.opt.undofile = true -- enable persistent undo
 vim.opt.updatetime = 100 -- faster completion (4000ms default)
 vim.opt.laststatus = 3
+vim.opt.textwidth = 66
 -- Experimental
 vim.opt.mouse = ""
 vim.opt.showmatch = true
