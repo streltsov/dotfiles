@@ -1,5 +1,6 @@
 -- Weather to change working directory or not
 vim.g.vimwiki_auto_chdir = 1
+vim.g.vimwiki_markdown_link_ext = 1
 vim.g.vimwiki_list = {
     {
      path = '~/.the-knowledge-garden',

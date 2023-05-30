@@ -85,3 +85,6 @@ vim.keymap.set("n", "<Leader>vo", telescope.vim_options)
 vim.keymap.set("n", "<Leader>?", telescope.keymaps)
 
 -- vim.keymap.set('n', '<Leader>vof', telescope.oldfiles)
+
+vim.keymap.set("n", "<Leader>bg", '<cmd>lua vim.opt.background = vim.opt.background:get() == "light" and "dark" or "light"<CR>')
+
