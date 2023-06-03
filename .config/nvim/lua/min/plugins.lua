@@ -39,6 +39,7 @@ return packer.startup(function(use)
   use("jose-elias-alvarez/null-ls.nvim")
   -- use("jose-elias-alvarez/typescript.nvim")
   use("folke/trouble.nvim")
+  use("github/copilot.vim")
 
   use("vimwiki/vimwiki")
   use("mattn/calendar-vim")

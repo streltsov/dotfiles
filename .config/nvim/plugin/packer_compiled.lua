@@ -99,6 +99,11 @@ _G.packer_plugins = {
     path = "/home/streltsov/.local/share/nvim/site/pack/packer/start/cmp-snippy",
     url = "https://github.com/dcampos/cmp-snippy"
   },
+  ["copilot.vim"] = {
+    loaded = true,
+    path = "/home/streltsov/.local/share/nvim/site/pack/packer/start/copilot.vim",
+    url = "https://github.com/github/copilot.vim"
+  },
   ["gitsigns.nvim"] = {
     loaded = true,
     path = "/home/streltsov/.local/share/nvim/site/pack/packer/start/gitsigns.nvim",
