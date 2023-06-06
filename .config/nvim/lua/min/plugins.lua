@@ -37,9 +37,8 @@ return packer.startup(function(use)
   use({ "nvim-telescope/telescope.nvim", requires = { "BurntSushi/ripgrep" } })
 
   use("jose-elias-alvarez/null-ls.nvim")
-  -- use("jose-elias-alvarez/typescript.nvim")
   use("folke/trouble.nvim")
-  use("github/copilot.vim")
+  use ("zbirenbaum/copilot.lua")
 
   use("vimwiki/vimwiki")
   use("mattn/calendar-vim")

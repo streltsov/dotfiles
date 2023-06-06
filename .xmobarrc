@@ -1,7 +1,7 @@
 Config { 
          font     = "Operator Mono Medium 11"
-,bgColor = "#f2e5bc"
-,fgColor = "#3c3836"
+,bgColor = "#282828"
+,fgColor = "#ebdbb2"
        , alpha    = 255
        , position = TopP 0 0
        , allDesktops = True
