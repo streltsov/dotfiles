@@ -60,6 +60,10 @@ return packer.startup(function(use)
   use("lukas-reineke/indent-blankline.nvim")
   -- Snippy for snippet support
   use("dcampos/nvim-snippy")
+  use("kelly-lin/ranger.nvim")
+  use("airblade/vim-rooter")
+  use("Pocco81/true-zen.nvim")
+
   -- Nvim-cmp for autocompletion with several sources
   use({
     "hrsh7th/nvim-cmp",

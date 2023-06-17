@@ -154,6 +154,11 @@ _G.packer_plugins = {
     path = "/home/streltsov/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
+  ["ranger.nvim"] = {
+    loaded = true,
+    path = "/home/streltsov/.local/share/nvim/site/pack/packer/start/ranger.nvim",
+    url = "https://github.com/kelly-lin/ranger.nvim"
+  },
   ripgrep = {
     loaded = true,
     path = "/home/streltsov/.local/share/nvim/site/pack/packer/start/ripgrep",
@@ -168,6 +173,16 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/streltsov/.local/share/nvim/site/pack/packer/start/trouble.nvim",
     url = "https://github.com/folke/trouble.nvim"
+  },
+  ["true-zen.nvim"] = {
+    loaded = true,
+    path = "/home/streltsov/.local/share/nvim/site/pack/packer/start/true-zen.nvim",
+    url = "https://github.com/Pocco81/true-zen.nvim"
+  },
+  ["vim-rooter"] = {
+    loaded = true,
+    path = "/home/streltsov/.local/share/nvim/site/pack/packer/start/vim-rooter",
+    url = "https://github.com/airblade/vim-rooter"
   },
   vimwiki = {
     loaded = true,
