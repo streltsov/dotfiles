@@ -36,44 +36,44 @@ return packer.startup(function(use)
   use("wbthomason/packer.nvim") 
   -- Pre-configured setups for most popular language servers
   use 'neovim/nvim-lspconfig' 
+  -- Null-ls for using Neovim itself as a language server
+  use("jose-elias-alvarez/null-ls.nvim")
   -- Plenary: a library with various utility functions
   use("nvim-lua/plenary.nvim") 
   -- Treesitter for improved syntax highlighting and code understanding
-  use("nvim-treesitter/nvim-treesitter") 
+   use("nvim-treesitter/nvim-treesitter") 
   -- Gruvbox color scheme
-  use("ellisonleao/gruvbox.nvim")
+  use("morhetz/gruvbox")-- use("ellisonleao/gruvbox.nvim")
   -- Gitsigns for git annotations in the sign column
   use("lewis6991/gitsigns.nvim")
   -- Telescope for fuzzy finding and picking things
   use({ "nvim-telescope/telescope.nvim", requires = { "BurntSushi/ripgrep" } })
-  -- Null-ls for using Neovim itself as a language server
-  use("jose-elias-alvarez/null-ls.nvim")
   -- Trouble for pretty diagnostics, references, telescope results etc in an easy to navigate sidebar
   use("folke/trouble.nvim")
   -- Github Copilot extension
   use ("zbirenbaum/copilot.lua")
-  -- Vimwiki for note taking and todo system
-  use("vimwiki/vimwiki")
-  -- Calendar plugin for vim
-  use("mattn/calendar-vim")
   -- Indent guides for code indentation
   use("lukas-reineke/indent-blankline.nvim")
+
   -- Snippy for snippet support
-  use("dcampos/nvim-snippy")
+  -- use("dcampos/nvim-snippy")
+
   use("kelly-lin/ranger.nvim")
   use("airblade/vim-rooter")
-  use("Pocco81/true-zen.nvim")
 
   -- Nvim-cmp for autocompletion with several sources
-  use({
-    "hrsh7th/nvim-cmp",
-    requires = {
-      "hrsh7th/cmp-nvim-lsp",  -- LSP source for nvim-cmp
-      "hrsh7th/cmp-buffer",  -- Buffer source for nvim-cmp
-      "dcampos/cmp-snippy",  -- Snippy source for nvim-cmp
-      "hrsh7th/cmp-path",  -- Filesystem/Path source for nvim-cmp
-    },
-  })
+   use({
+     "hrsh7th/nvim-cmp",
+  --   requires = {
+       "hrsh7th/cmp-nvim-lsp",  -- LSP source for nvim-cmp
+  --     "hrsh7th/cmp-buffer",  -- Buffer source for nvim-cmp
+  --     "dcampos/cmp-snippy",  -- Snippy source for nvim-cmp
+  --     "hrsh7th/cmp-path",  -- Filesystem/Path source for nvim-cmp
+  --   },
+   })
+
+  -- Vimwiki for note taking and todo system
+  use("vimwiki/vimwiki")
 
   -- If Packer was just installed, perform a sync operation to install all plugins
   if PACKER_BOOTSTRAP then

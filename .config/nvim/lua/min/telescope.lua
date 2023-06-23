@@ -28,24 +28,16 @@ vim.keymap.set("n", "<Leader>g", telescope.live_grep)
 -- Uncomment for git files in current directory
 -- vim.keymap.set("n", "<Leader>f", telescope.git_files)
 
--- Grep string under the cursor
 vim.keymap.set("n", "<Leader>u", telescope.grep_string)
-
--- Git related shortcuts
--- Git commits
-vim.keymap.set("n", "<Leader>gc", telescope.git_commits)
--- Git buffer commits
-vim.keymap.set("n", "<Leader>gbc", telescope.git_bcommits)
--- Git branches
-vim.keymap.set("n", "<Leader>gb", telescope.git_branches)
--- Git status
-vim.keymap.set("n", "<Leader>gs", telescope.git_status)
--- Git stash
-vim.keymap.set("n", "<Leader>gst", telescope.git_stash)
-
--- LSP related shortcuts
--- LSP references
+vim.keymap.set("n", "<Leader>c", telescope.git_commits)
+vim.keymap.set("n", "<Leader>cb", telescope.git_bcommits)
+vim.keymap.set("n", "<Leader>s", telescope.git_status)
 vim.keymap.set("n", "<Leader>rf", telescope.lsp_references)
+vim.keymap.set("n", "<Leader>b", telescope.buffers)
+vim.keymap.set('n', '<Leader>o', telescope.oldfiles)
+-- vim.keymap.set("n", "<Leader>gb", telescope.git_branches)
+-- vim.keymap.set("n", "<Leader>gst", telescope.git_stash)
+
 -- LSP diagnostics
 -- vim.keymap.set("n", "<Leader>d", telescope.diagnostics)
 -- LSP implementations
@@ -55,14 +47,12 @@ vim.keymap.set("n", "<Leader>rf", telescope.lsp_references)
 
 -- Vim related shortcuts
 -- Vim commands
-vim.keymap.set("n", "<Leader>vc", telescope.commands)
+-- vim.keymap.set("n", "<Leader>vc", telescope.commands)
 -- Vim buffers
-vim.keymap.set("n", "<Leader><Leader>f", telescope.buffers)
 
 -- Vim options
-vim.keymap.set("n", "<Leader>vo", telescope.vim_options)
+-- vim.keymap.set("n", "<Leader>vo", telescope.vim_options)
 -- Vim keymaps
-vim.keymap.set("n", "<Leader>?", telescope.keymaps)
+-- vim.keymap.set("n", "<Leader>?", telescope.keymaps)
 
 -- Recently opened files
-vim.keymap.set('n', '<Leader>vof', telescope.oldfiles)

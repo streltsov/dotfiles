@@ -1,5 +1,5 @@
 -- Enable true color support, allowing for more than 256 colors
-vim.opt.termguicolors = true 
+vim.opt.termguicolors = true
 
 -- Disable mode indication in command line. By default, Vim shows
 -- "-- INSERT --", "-- VISUAL --", etc.

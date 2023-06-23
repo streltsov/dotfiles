@@ -1,1 +1,0 @@
--- Ask GPT for usefull mappings

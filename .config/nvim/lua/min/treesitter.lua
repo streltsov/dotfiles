@@ -1,7 +1,7 @@
-local options = {
+require('nvim-treesitter.configs').setup( {
   auto_install = true,
   ensure_installed = {
-    "help",
+    "vimdoc",
     "lua",
     "vim",
     "html",
@@ -18,6 +18,4 @@ local options = {
     },
   },
   indent = { enable = true },
-}
-
-require('nvim-treesitter.configs').setup(options)
+})
