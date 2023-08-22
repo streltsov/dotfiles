@@ -25,3 +25,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, opts)
   end,
 })
+
+lspconfig.tailwindcss.setup{}
+lspconfig.svelte.setup({
+    capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()) -- Set up capabilities
+})

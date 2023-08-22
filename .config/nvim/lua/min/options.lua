@@ -75,7 +75,7 @@ vim.opt.laststatus = 3
 
 -- Set the maximum width for text that is being inserted. A longer
 -- line will be broken after white space to get this width.
-vim.opt.textwidth = 66
+vim.opt.textwidth = 0
 
 -- Disable the use of the mouse
 vim.opt.mouse = ""

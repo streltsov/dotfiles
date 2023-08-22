@@ -26,3 +26,6 @@ vim.api.nvim_set_keymap('n', '<leader>we',
     [[<Cmd>execute 'edit ' . system('ls -tr *.md | head -n 1')<CR>]], 
     { noremap = true, silent = true })
 
+vim.fn.matchadd('Comment', '- \\[[Xx]\\] .*$')
+vim.fn.matchadd('Todo', '- \\[[^Xx]\\] >> .*$')
+
