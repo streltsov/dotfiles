@@ -43,7 +43,7 @@ return packer.startup(function(use)
   -- Treesitter for improved syntax highlighting and code understanding
    use("nvim-treesitter/nvim-treesitter") 
   -- Gruvbox color scheme
-  use("morhetz/gruvbox")-- use("ellisonleao/gruvbox.nvim")
+  use("ellisonleao/gruvbox.nvim")
   -- Gitsigns for git annotations in the sign column
   use("lewis6991/gitsigns.nvim")
   -- Telescope for fuzzy finding and picking things
