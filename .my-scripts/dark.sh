@@ -16,7 +16,7 @@ sed -i "$(wc -l < $PATH_TO_ALLACRITTY_CONF)s/light/dark/" $PATH_TO_ALLACRITTY_CO
 # sed -i "$(wc -l < $PATH_TO_NEOVIM_COLORSCHEME_FILE)s/light/dark/" $PATH_TO_NEOVIM_COLORSCHEME_FILE
 
  
-killall xmobar
-sed -i "s/^.*bgColor.*$/,bgColor = \"#282828\"/" ~/.xmobarrc
-sed -i "s/^.*fgColor.*$/,fgColor = \"#ebdbb2\"/" ~/.xmobarrc
+# killall xmobar
+# sed -i "s/^.*bgColor.*$/,bgColor = \"#282828\"/" ~/.xmobarrc
+# sed -i "s/^.*fgColor.*$/,fgColor = \"#ebdbb2\"/" ~/.xmobarrc
 # xmobar &

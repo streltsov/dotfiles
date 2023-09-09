@@ -89,10 +89,8 @@ vim.g.mapleader = ' '
 -- Disable automatic formatting options when entering a buffer
 vim.cmd("au BufEnter * set fo-=c fo-=r fo-=o")
 
--- Clears the last executed command from the command line
+-- Disable line numbers for Markdown files
 vim.cmd([[
-  augroup ClearCmdLine
-    autocmd!
-    autocmd CmdlineLeave * lua vim.schedule(function() vim.api.nvim_echo({}, false, {}) end)
-  augroup END
+  autocmd FileType markdown setlocal nonumber norelativenumber
 ]])
+
