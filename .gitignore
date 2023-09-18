@@ -7,7 +7,8 @@
 !/.gitignore
 
 # My Scripts
-!/.my-scripts
+!.my-scripts
+!.my-scripts/*
 
 # Alacritty
 !/.alacritty.yml
