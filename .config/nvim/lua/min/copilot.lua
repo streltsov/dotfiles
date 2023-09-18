@@ -7,10 +7,9 @@ require('copilot').setup({
     },
   },
   filetypes = {
-    markdown = false
-    -- javascript = true, -- Enable suggestions for JavaScript files
-    -- typescript = true, -- Enable suggestions for TypeScript files
-    -- ["*"] = false, -- Disable suggestions for all other file types
+    javascript = true, -- Enable suggestions for JavaScript files
+    typescript = true, -- Enable suggestions for TypeScript files
+    ["*"] = false, -- Disable suggestions for all other file types
   },
 })
 
