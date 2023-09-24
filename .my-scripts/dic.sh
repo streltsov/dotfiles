@@ -19,7 +19,7 @@ log_choice=${log_choice^}    # Convert to uppercase
 
 case "$log_choice" in
   [Y]*)  # If the user entered "Y" or just pressed Enter
-    echo "$output" >> anki-words.txt
+    echo "$output" >> shared-2/anki-words.txt
     ;;
   *)  # For any other response from the user
     echo "Output not logged."

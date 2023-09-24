@@ -101,7 +101,8 @@ autoload -Uz compinit promptinit
 compinit
 promptinit
 
-export QT_QPA_PLATFORMTHEME=qt5ct
+# export QT_QPA_PLATFORMTHEME=qt5ct
+export QT_QPA_PLATFORMTHEME=gtk3
 
 PATH="$HOME/.node_modules/bin:$PATH"
 export npm_config_prefix=~/.node_modules
@@ -127,3 +128,4 @@ alias grep='grep --colour=auto'
 alias tojxl='find . -type f -regextype sed -regex ".*[^jxl|mp4]" -exec sh -c 'cjxl -q 100 {} "${0%.*}.jxl"' {} \;'
 alias mountfa='sudo mount -t vfat -ouser,umask=0000'
 alias mupdf='mupdf -C FBF1C7'
+# alias dic='sgpt --model=gpt-4 --role dic'
