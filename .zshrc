@@ -129,3 +129,6 @@ alias tojxl='find . -type f -regextype sed -regex ".*[^jxl|mp4]" -exec sh -c 'cj
 alias mountfa='sudo mount -t vfat -ouser,umask=0000'
 alias mupdf='mupdf -C FBF1C7'
 # alias dic='sgpt --model=gpt-4 --role dic'
+alias datesystemwasintalled='ls -l --time=creation /var/log/pacman.log'
+alias myalias='myfunction() { sgpt --role grammar-checker "$1" | tee /dev/tty | xclip -selection clipboard; }; myfunction'
+
