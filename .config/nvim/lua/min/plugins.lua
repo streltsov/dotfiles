@@ -55,9 +55,6 @@ return packer.startup(function(use)
   -- Indent guides for code indentation
   use("lukas-reineke/indent-blankline.nvim")
 
-  -- Snippy for snippet support
-  -- use("dcampos/nvim-snippy")
-
   use("kelly-lin/ranger.nvim")
   use("airblade/vim-rooter")
 
@@ -68,7 +65,7 @@ return packer.startup(function(use)
        "hrsh7th/cmp-nvim-lsp",  -- LSP source for nvim-cmp
   --     "hrsh7th/cmp-buffer",  -- Buffer source for nvim-cmp
   --     "dcampos/cmp-snippy",  -- Snippy source for nvim-cmp
-  --     "hrsh7th/cmp-path",  -- Filesystem/Path source for nvim-cmp
+       "hrsh7th/cmp-path",  -- Filesystem/Path source for nvim-cmp
   --   },
    })
 
