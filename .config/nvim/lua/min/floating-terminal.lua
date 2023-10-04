@@ -7,7 +7,7 @@ local open_float_term = function()
   -- Get current UI dimensions
   local gheight = vim.api.nvim_list_uis()[1].height
   local gwidth = vim.api.nvim_list_uis()[1].width
-  
+
   -- Floating window configuration
   local win_config = {
     relative = "editor",
@@ -41,5 +41,5 @@ augroup END
 ]])
 
 -- Map CTRL + Enter to open floating terminal
-vim.keymap.set("n", "<Leader>a", open_float_term)
+vim.keymap.set("n", "<C-Space>", open_float_term)
 -- vim.api.nvim_set_keymap('n', '<Leader>a', 'open_float_term', {noremap = true})

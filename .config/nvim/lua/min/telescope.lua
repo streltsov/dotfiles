@@ -1,23 +1,20 @@
 -- Set up telescope with custom settings
-require("telescope").setup {
-  -- Custom settings for the buffers picker
+require("telescope").setup({
   pickers = {
     buffers = {
       -- Show all buffers, not just current tab's buffers
       show_all_buffers = true,
       -- Sort buffers by last used
       sort_lastused = true,
-      -- Custom mappings for the buffer picker
       mappings = {
         -- In insert mode
         i = {
-          -- <Ctrl+d> to delete a buffer
           ["<c-d>"] = "delete_buffer",
-        }
-      }
-    }
-  }
-}
+        },
+      },
+    },
+  },
+})
 
 -- Create shortcuts for common telescope commands
 local telescope = require("telescope.builtin")
@@ -34,7 +31,7 @@ vim.keymap.set("n", "<Leader>cb", telescope.git_bcommits)
 vim.keymap.set("n", "<Leader>s", telescope.git_status)
 vim.keymap.set("n", "<Leader>rf", telescope.lsp_references)
 vim.keymap.set("n", "<Leader>b", telescope.buffers)
-vim.keymap.set('n', '<Leader>o', telescope.oldfiles)
+vim.keymap.set("n", "<Leader>o", telescope.oldfiles)
 -- vim.keymap.set("n", "<Leader>gb", telescope.git_branches)
 -- vim.keymap.set("n", "<Leader>gst", telescope.git_stash)
 

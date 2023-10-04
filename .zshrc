@@ -109,6 +109,7 @@ export npm_config_prefix=~/.node_modules
 export PATH="$HOME/.local/bin:$PATH"
 export PATH=$PATH:~/.my-scripts
 export PATH=$PATH:~/.the-knowledge-garden/scripts
+export OPENAI_API_KEY=$(cat ~/shared-2/.openai-api-key)
 
 #Vi style
 #set -o vi
@@ -132,3 +133,4 @@ alias mupdf='mupdf -C FBF1C7'
 alias datesystemwasintalled='ls -l --time=creation /var/log/pacman.log'
 alias gf='myfunction() { sgpt --role corrector "$1" | tee /dev/tty | xclip -selection clipboard; }; myfunction'
 alias def='sgpt --role dictionary'
+alias gpt='sgpt --repl temp'

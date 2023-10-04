@@ -2,13 +2,24 @@ local b = require("null-ls").builtins
 require("null-ls").setup({
   sources = {
     b.formatting.prettierd.with({
-      filetypes = { "javascript", "typescript", "svelte", "css", "html", "json", "markdown", "vimwiki" },
+      filetypes = {
+        "svelte",
+        "css",
+        "html",
+        "json",
+        "markdown",
+        "vimwiki",
+        "javascript",
+        "typescript",
+        "typescriptreact",
+        "javascriptreact",
+      },
     }),
     b.formatting.eslint_d.with({
-      filetypes = { "javascript", "typescript", "svelte" },
+      filetypes = { "javascript", "typescript", "svelte", "javascriptreact", "typescriptreact" },
     }),
     b.diagnostics.eslint_d.with({
-      filetypes = { "javascript", "typescript", "svelte" },
+      filetypes = { "javascript", "typescript", "svelte", "javascriptreact", "typescriptreact" },
       command = "eslint_d",
     }),
     b.formatting.stylua.with({
