@@ -12,7 +12,7 @@ require("trouble").setup({
     error = "Error",
     warning = "Warning",
     hint = "Hint",
-    information = "Info"
+    information = "Info",
   },
   use_diagnostic_signs = false, -- enabling this will use the signs defined in your lsp client
 })

@@ -104,5 +104,8 @@ local function keymapOptions(desc)
   }
 end
 
-vim.keymap.set({ "n", "i" }, "<space>a", "<cmd>GpChatToggle<cr>", keymapOptions("Toggle Popup Chat"))
-vim.keymap.set("v", "<space>a", ":<C-u>'<,'>GpChatToggle<cr>", keymapOptions("Visual Popup Chat"))
+vim.keymap.set({ "n", "i" }, "<C-Space><C-n>", "<cmd>GpChatNew<cr>", keymapOptions("New Chat"))
+vim.keymap.set({ "n", "i" }, "<C-Space><C-f>", "<cmd>GpChatFinder<cr>", keymapOptions("Chat Finder"))
+
+vim.keymap.set({ "n", "i" }, "<C-Space><C-Space>", "<cmd>GpChatToggle<cr>", keymapOptions("Toggle Popup Chat"))
+vim.keymap.set("v", "<C-Space><C-Space>", ":<C-u>'<,'>GpChatToggle<cr>", keymapOptions("Visual Popup Chat"))

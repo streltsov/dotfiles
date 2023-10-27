@@ -3,6 +3,7 @@ require("null-ls").setup({
   sources = {
     b.formatting.prettierd.with({
       filetypes = {
+
         "svelte",
         "css",
         "html",
