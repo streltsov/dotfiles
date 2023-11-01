@@ -43,3 +43,7 @@
 !/.config/mpv
 /.config/mpv/*
 !/.config/mpv/mpv.conf
+
+# Themes
+!.themes
+!.themes/*
