@@ -34,6 +34,14 @@ require("lazy").setup({
   { "akinsho/toggleterm.nvim", version = "*", config = true },
   { "nvim-telescope/telescope.nvim", dependencies = { "BurntSushi/ripgrep" } },
   { "hrsh7th/nvim-cmp", dependencies = { "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-path" } },
+  {
+    "folke/zen-mode.nvim",
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    },
+  },
 })
 
 require("min.telescope")
