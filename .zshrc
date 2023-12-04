@@ -110,6 +110,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH=$PATH:~/.my-scripts
 export PATH=$PATH:~/.the-knowledge-garden/scripts
 export OPENAI_API_KEY=$(cat ~/shared-2/.openai-api-key)
+export DISPLAY=:0
 
 #Vi style
 #set -o vi
