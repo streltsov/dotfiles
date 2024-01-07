@@ -31,6 +31,9 @@
 # Neovim
 !/.config/nvim
 
+# XDG directories
+!/.config/user-dirs.dirs
+
 # Clight
 !/.config/clight.conf
 
