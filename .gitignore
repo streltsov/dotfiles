@@ -14,7 +14,7 @@
 !.my-scripts/*
 
 # Alacritty
-!/.alacritty.yml
+!/.alacritty.toml
 
 # Xmonad
 !/.xmonad
