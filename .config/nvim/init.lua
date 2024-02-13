@@ -1557,7 +1557,6 @@ function ToggleVerticalSplit()
   end
 
   local branch_notes_buffer_focused = vim.g.branch_notes_buffer_number == current_buffer_number
-  print(vim.g.branch_notes_buffer_number .. " " .. current_buffer_number)
 
   if branch_notes_buffer_focused then
     vim.api.nvim_buf_delete(current_buffer_number, { force = true })
