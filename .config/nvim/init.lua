@@ -98,7 +98,7 @@ vim.cmd([[autocmd VimResized * wincmd =]])
 --   autocmd FileType markdown setlocal nonumber norelativenumber
 -- ]])
 
-vim.keymap.set("n", "<Leader><Leader>", "<cmd>:e NOTES.md<cr>")
+-- vim.keymap.set("n", "<Leader><Leader>", "<cmd>:e NOTES.md<cr>")
 
 -------------------------------------------------
 ------------------ Diagnostics ------------------
@@ -142,6 +142,10 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+  {
+    -- PluginNameAnchor
+    "MunifTanjim/nui.nvim",
+  },
   {
     -- PluginNameAnchor
     "neovim/nvim-lspconfig",
@@ -789,7 +793,7 @@ require("lazy").setup({
         },
         default_args = {
           -- Default args prepended to the arg-list for the listed commands
-          DiffviewOpen = { "main" },
+          DiffviewOpen = {},
           DiffviewFileHistory = {},
         },
         hooks = {}, -- See ':h diffview-config-hooks'
@@ -1473,3 +1477,207 @@ require("lazy").setup({
   --   end,
   -- },
 })
+-- local Popup = require("nui.popup")
+
+-- Functions --
+
+function get_git_branch()
+  local raw_branch = vim.fn.trim(vim.fn.system("git rev-parse --abbrev-ref HEAD"))
+  return raw_branch
+end
+
+function remove_after_second_slash(inputString)
+  local firstSlashIndex = string.find(inputString, "/")
+  if firstSlashIndex then
+    local secondSlashIndex = string.find(inputString, "/", firstSlashIndex + 1)
+    if secondSlashIndex then
+      return string.sub(inputString, 1, secondSlashIndex - 1)
+    end
+  end
+  return inputString
+end
+
+function replace_slash_with_dashes(inputString)
+  return string.gsub(inputString, "/", "-")
+end
+
+function format_git_branch_name(inputString)
+  return replace_slash_with_dashes(remove_after_second_slash(inputString))
+end
+
+function get_file_path()
+  local git_branch = get_git_branch()
+  return "~/shared-2/.branch-notes/" .. format_git_branch_name(git_branch) .. ".md"
+end
+
+function open_split(file_path, width)
+  vim.cmd("bo 66vsp " .. file_path)
+end
+
+function get_buffer_number()
+  return vim.fn.bufnr("%")
+end
+
+function get_window_id()
+  return vim.fn.win_getid()
+end
+
+-- local target_buffer_number = your_buffer_number
+--
+-- -- Iterate over all windows to find the one with the target buffer
+-- for _, winid in ipairs(vim.api.nvim_list_wins()) do
+--   local win_buffer_number = vim.api.nvim_win_get_buf(winid)
+--   if win_buffer_number == target_buffer_number then
+--     -- Set the current window to the one with the target buffer
+--     vim.api.nvim_set_current_win(winid)
+--     break
+--   end
+-- end
+
+function get_window_id_by_buffer_number(buffer_number)
+  for _, winid in ipairs(vim.api.nvim_list_wins()) do
+    local win_buffer_number = vim.api.nvim_win_get_buf(winid)
+    if win_buffer_number == buffer_number then
+      return winid
+    end
+  end
+  return -1
+end
+
+-- // Functions //
+
+function ToggleVerticalSplit()
+  local current_buffer_number = get_buffer_number()
+  local is_split_open = vim.g.branch_notes_buffer_number ~= nil
+
+  if not is_split_open then
+    vim.cmd("bo 66vsp " .. get_file_path())
+    vim.g.branch_notes_buffer_number = get_buffer_number()
+    return
+  end
+
+  local branch_notes_buffer_focused = vim.g.branch_notes_buffer_number == current_buffer_number
+  print(vim.g.branch_notes_buffer_number .. " " .. current_buffer_number)
+
+  if branch_notes_buffer_focused then
+    vim.api.nvim_buf_delete(current_buffer_number, { force = true })
+    vim.g.branch_notes_buffer_number = nil
+    return
+  end
+
+  vim.api.nvim_set_current_win(get_window_id_by_buffer_number(vim.g.branch_notes_buffer_number))
+
+  -- else
+  --   if get_window_id_by_buffer_number(vim.g.branch_notes_buffer_number) == -1 then
+  --     vim.cmd("bo 66vsp " .. get_file_path())
+  --     vim.g.branch_notes_buffer_number = current_buffer_number
+  --   else
+  --     -- Set the current window to the one with the target buffer
+  --     vim.api.nvim_set_current_win(get_window_id_by_buffer_number(vim.g.branch_notes_buffer_number))
+  --   end
+end
+
+vim.keymap.set("n", "<C-n>", ":lua ToggleVerticalSplit()<CR>", { noremap = true, silent = true })
+
+-- Function to toggle the vertical split
+-- function ToggleVerticalSplit()
+--   -- Check if the vertical split is open
+--   local is_split_open = vim.fn.exists("g:my_vertical_split_open") and vim.g.my_vertical_split_open == 1
+--
+--   if is_split_open then
+--     -- Close the vertical split
+--     vim.cmd("vertical close")
+--     vim.g.my_vertical_split_open = 0
+--   else
+--     -- Open the vertical split
+--     vim.cmd("vsplit")
+--     vim.g.my_vertical_split_open = 1
+--   end
+-- end
+
+-- Map the function to a key combination (change this to your desired keymap)
+-- vim.api.nvim_set_keymap('n', '<Leader>vs', ':lua ToggleVerticalSplit()<CR>', { noremap = true, silent = true })
+--
+--
+-- -- Function to toggle the vertical split based on the target file path
+-- function ToggleNamedVerticalSplit()
+--   local target_file_path = get_file_path()
+--   local current_file_path = vim.fn.expand("%:p")
+--
+--   -- Check if the current buffer is the target buffer (split is open)
+--   if current_file_path == target_file_path then
+--     vim.cmd("vertical close")
+--   else
+--     vim.cmd("vsplit " .. target_file_path)
+--   end
+-- end
+--
+-- -- Example: Toggle a vertical split with the file path determined by get_file_path
+-- vim.api.nvim_set_keymap("n", "<Leader>vs", ":lua ToggleNamedVerticalSplit()<CR>", { noremap = true, silent = true })
+
+-- local popup = Popup({
+--   position = "50%",
+--   size = {
+--     width = 80,
+--     height = 40,
+--   },
+--   enter = true,
+--   focusable = true,
+--   zindex = 50,
+--   relative = "editor",
+--   border = {
+--     padding = {
+--       top = 2,
+--       bottom = 2,
+--       left = 3,
+--       right = 3,
+--     },
+--     style = "rounded",
+--     text = {
+--       top = "Branch notes (" .. get_git_branch() .. ")",
+--       top_align = "center",
+--       bottom = formatGitBranchName(get_git_branch()),
+--       bottom_align = "left",
+--     },
+--   },
+--   buf_options = {
+--     modifiable = true,
+--     readonly = false,
+--   },
+--   win_options = {
+--     winblend = 10,
+--     winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
+--   },
+-- })
+--
+-- vim.keymap.set("n", "<C-n>", function()
+--   popup:mount()
+-- end)
+--
+-- popup:map("n", "<Esc>", function(bufnr)
+--   popup:unmount()
+-- end, { noremap = true })
+--
+-- local event = require("nui.utils.autocmd").event
+-- -- unmount component when cursor leaves buffer
+-- popup:on(event.BufLeave, function()
+--   popup:unmount()
+-- end)
+
+-- mount/open the component
+-- popup:mount()
+
+-- close on <esc> in normal mode
+-- popup:map("n", "<esc>", function()
+--   popup:unmount()
+-- end, { once = true })
+
+-- local ok = popup:map("n", "<esc>", function(bufnr)
+--   print("ESC pressed in Normal mode!")
+-- end, { noremap = true })
+
+-- vim.keymap.set("n", "<leader><leader>", function()
+--   local filepath = get_file_path()
+--
+--   vim.api.nvim_command("e " .. filepath)
+-- end)
