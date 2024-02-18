@@ -738,6 +738,22 @@ function get_height_16_9(width)
   return math.floor(width / 16) * 9
 end
 
+function mergeTables(t1, t2)
+  local result = {}
+
+  -- Copy key-value pairs from t1
+  for k, v in pairs(t1) do
+    result[k] = v
+  end
+
+  -- Copy key-value pairs from t2, overwriting existing keys
+  for k, v in pairs(t2) do
+    result[k] = v
+  end
+
+  return result
+end
+
 local general_popup_options = {
   position = "50%",
   enter = true,
@@ -765,6 +781,8 @@ local general_popup_options = {
     top_align = "center",
     bottom_align = "left",
   },
+  -- You can pass bufnr of an existing buffer to display it on the popup.
+  -- bufnr = vim.api.nvim_get_current_buf(),
 }
 
 -- text = {
@@ -774,23 +792,8 @@ local general_popup_options = {
 --   bottom_align = "left",
 -- }
 
-function mergeTables(t1, t2)
-  local result = {}
-
-  -- Copy key-value pairs from t1
-  for k, v in pairs(t1) do
-    result[k] = v
-  end
-
-  -- Copy key-value pairs from t2, overwriting existing keys
-  for k, v in pairs(t2) do
-    result[k] = v
-  end
-
-  return result
-end
-
-vim.keymap.set("n", "<C-m>", function()
+local Popup = require("nui.popup")
+function open_popup(command, popup_options)
   local neovim_width = (vim.api.nvim_get_option_value("columns", {}))
   local popup_width = math.floor(neovim_width * 0.8)
   local popup_height = math.floor(get_height_16_9(popup_width) / 2.5) -- looks like columns and lines values are not equal
@@ -804,44 +807,61 @@ vim.keymap.set("n", "<C-m>", function()
     size = size,
   })
 
-  local Popup = require("nui.popup")
   local popup = Popup(popup_options)
 
   popup:mount()
-  vim.cmd("terminal")
-  -- vim.api.nvim_open_term
-  vim.api.nvim_feedkeys("a", "n", true)
-  vim.api.nvim_create_autocmd({ "WinClosed" }, {
-    pattern = { "*" },
-    callback = function()
-      popup:unmount()
-      return true -- Remove the autocmd
-    end,
-  })
+
+  if command then
+    vim.cmd(command)
+    if string.sub(command, 1, 3) == "ter" then
+      -- vim.api.nvim_open_term
+      vim.api.nvim_feedkeys("a", "n", true)
+    end
+  else
+    vim.cmd('terminal echo "No command provided. Terminal opened."')
+  end
+
+  -- Events
+
+  -- local ok = popup:map("n", "<esc>", function(bufnr)
+  --   print("ESC pressed in Normal mode!")
+  -- end, { noremap = true })
+
+  local event = require("nui.utils.autocmd").event
+  -- popup:on({ event.BufLeave }, function()
+  --   popup:unmount()
+  -- end, { once = true })
+
+  -- unmount component when cursor leaves buffer
+  popup:on(event.BufLeave, function()
+    popup:unmount()
+  end)
+
+  -- vim.api.nvim_create_autocmd({ "WinClosed" }, {
+  --   pattern = { "*" },
+  --   callback = function()
+  --     popup:unmount()
+  --     return true -- Remove the autocmd
+  --   end,
+  -- })
+end
+
+-- General terminal
+vim.keymap.set("n", "<Leader><Leader>", function()
+  open_popup("terminal")
 end)
 
-vim.keymap.set("n", "<C-n>", function()
-  local Popup = require("nui.popup")
-  local neovim_height = vim.api.nvim_get_option_value("lines", {})
-  local popup_height = math.floor(neovim_height * 0.8)
+-- Pomodoro (ncmpcpp)
+vim.keymap.set("n", "<Leader>p", function()
+  open_popup("terminal ncmpcpp -s browser")
+end)
 
-  size = {
-    width = 56,
-    height = popup_height,
-  }
+-- Global notes
+vim.keymap.set("n", "<Leader>m", function()
+  open_popup("e ~/shared-2/.branch-notes/.global-notes.md")
+end)
 
-  local popup_options = mergeTables(general_popup_options, {
-    size = size,
-  })
-  local popup = Popup(popup_options)
-
-  popup:mount()
-  vim.cmd("e" .. get_file_path())
-  vim.api.nvim_create_autocmd({ "WinClosed" }, {
-    pattern = { "*" },
-    callback = function()
-      popup:unmount()
-      return true -- Remove the autocmd
-    end,
-  })
+-- Branch notes
+vim.keymap.set("n", "<Leader>n", function()
+  open_popup("e " .. get_file_path())
 end)
