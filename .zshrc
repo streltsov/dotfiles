@@ -101,6 +101,8 @@ autoload -Uz compinit promptinit
 compinit
 promptinit
 
+PATH="$HOME/.npm-global/bin:$PATH"
+export npm_config_prefix=~/.npm-global
 # export QT_QPA_PLATFORMTHEME=qt5ct
 export QT_QPA_PLATFORMTHEME=gtk3
 
@@ -136,3 +138,8 @@ alias gf='myfunction() { sgpt --role corrector "$1" | tee /dev/tty | xclip -sele
 alias def='sgpt --role dictionary'
 alias gpt='sgpt --repl temp'
 alias listen='mpv --no-video'
+alias nvim='nvim -u ~/shared-2/.dotfiles/.config/nvim/init.lua'
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
