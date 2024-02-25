@@ -86,22 +86,28 @@ vim.opt.showmatch = true
 vim.g.mapleader = " "
 
 -- Disable automatic formatting options when entering a buffer
-vim.cmd("au BufEnter * set fo-=c fo-=r fo-=o")
+vim.cmd("autocmd BufEnter * set fo-=c fo-=r fo-=o")
 
--- Misc
 -- Equalize window sizes when resizing
-vim.cmd([[autocmd VimResized * wincmd =]])
+vim.api.nvim_create_autocmd("VimResized", {
+  pattern = { "*" },
+  callback = function()
+    vim.cmd("wincmd =")
+  end,
+})
 
 -- Disable line numbers for Markdown files
--- vim.cmd([[
---   autocmd FileType markdown setlocal nonumber norelativenumber
--- ]])
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown" },
+  callback = function()
+    vim.opt.number = false
+    vim.opt.relativenumber = false
+  end,
+})
 
--- vim.keymap.set("n", "<Leader><Leader>", "<cmd>:e NOTES.md<cr>")
-
--------------------------------------------------
------------------- Diagnostics ------------------
--------------------------------------------------
+function get_height_16_9(width)
+  return math.floor(width / 16) * 9
+end
 
 -- This block configures diagnostic settings for Vim.
 vim.diagnostic.config({
@@ -122,11 +128,7 @@ vim.diagnostic.config({
 })
 
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float)
--- vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
--- vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
--- vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist)
 
----------------------- Lazy ----------------------
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -143,16 +145,37 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   {
     -- PluginNameAnchor
-    "MunifTanjim/nui.nvim",
+    "nvim-lua/plenary.nvim",
   },
   {
     -- PluginNameAnchor
     "neovim/nvim-lspconfig",
     config = function()
       local lspconfig = require("lspconfig")
+      capabilities = vim.lsp.protocol.make_client_capabilities()
+      -- require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+
+      lspconfig.eslint.setup({
+        capabilities = capabilities,
+        on_attach = function(client, bufnr)
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            command = "EslintFixAll",
+            buffer = bufnr,
+          })
+        end,
+      })
 
       lspconfig.tsserver.setup({
-        capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()), -- Set up capabilities
+        capabilities = capabilities,
+      })
+
+      lspconfig.tailwindcss.setup({})
+
+      lspconfig.svelte.setup({
+        capabilities = capabilities,
+        filetypes = {
+          "svelte",
+        },
       })
 
       -- Use LspAttach autocommand to only map the following keys
@@ -163,93 +186,44 @@ require("lazy").setup({
           -- Enable completion triggered by <c-x><c-o>
           vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
 
-          local opts = {
-            buffer = ev.buf,
-          }
-          vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-          vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-          vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-          vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-          vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-          vim.keymap.set("n", "<Leader>D", vim.lsp.buf.type_definition, opts)
-
-          -- vim.keymap.set("n", "<Leader>rf", vim.lsp.buf.references, opts)
-          vim.keymap.set("n", "<Leader>rn", vim.lsp.buf.rename, opts)
-          vim.keymap.set({ "n", "v" }, "<Leader>ca", vim.lsp.buf.code_action, opts)
-        end,
-      })
-
-      lspconfig.tailwindcss.setup({
-        filetypes = {
-          "javascript",
-          "javascriptreact",
-          "typescript",
-          "typescriptreact",
-          "svelte",
-        },
-      })
-
-      lspconfig.svelte.setup({
-        filetypes = {
-          "svelte",
-        },
-        capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
-      })
-
-      lspconfig.eslint.setup({
-        on_attach = function(client, bufnr)
-          vim.api.nvim_create_autocmd("BufWritePre", {
-            buffer = bufnr,
-            command = "EslintFixAll",
-          })
+          vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = ev.buf })
+          -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = ev.buf })
+          vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = ev.buf })
+          vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = ev.buf })
+          vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, { buffer = ev.buf })
+          vim.keymap.set("n", "<Leader>D", vim.lsp.buf.type_definition, { buffer = ev.buf })
+          vim.keymap.set("n", "<Leader>rn", vim.lsp.buf.rename, { buffer = ev.buf })
+          vim.keymap.set({ "n", "v" }, "<Leader>ca", vim.lsp.buf.code_action, { buffer = ev.buf })
         end,
       })
     end,
   },
   {
     -- PluginNameAnchor
-    "jose-elias-alvarez/null-ls.nvim",
+    "dnlhc/glance.nvim",
+    config = function()
+      require("glance").setup({
+        theme = { -- This feature might not work properly in nvim-0.7.2
+          enable = true, -- Will generate colors for the plugin based on your current colorscheme
+          mode = "darken", -- 'brighten'|'darken'|'auto', 'auto' will set mode based on the brightness of your colorscheme
+        },
+      })
+
+      vim.keymap.set("n", "gd", "<cmd>Glance definitions<CR>")
+    end,
+  },
+  {
+    -- PluginNameAnchor
+    "nvimtools/none-ls.nvim",
     config = function()
       local b = require("null-ls").builtins
+
       require("null-ls").setup({
         sources = {
-          b.formatting.prettierd.with({
-            filetypes = {
+          b.formatting.stylua,
+          b.formatting.prettier.with({
+            extra_filetypes = {
               "svelte",
-              "css",
-              "html",
-              "json",
-              "markdown",
-              "vimwiki",
-              "md",
-              "javascript",
-              "typescript",
-              "typescriptreact",
-              "javascriptreact",
-            },
-          }),
-          b.formatting.eslint_d.with({
-            filetypes = {
-              "javascript",
-              "typescript",
-              "svelte",
-              "javascriptreact",
-              "typescriptreact",
-            },
-          }),
-          b.diagnostics.eslint_d.with({
-            filetypes = {
-              "javascript",
-              "typescript",
-              "svelte",
-              "javascriptreact",
-              "typescriptreact",
-            },
-            command = "eslint_d",
-          }),
-          b.formatting.stylua.with({
-            filetypes = {
-              "lua",
             },
           }),
         },
@@ -277,50 +251,47 @@ require("lazy").setup({
   },
   {
     -- PluginNameAnchor
-    "nvim-lua/plenary.nvim",
+    "nvim-treesitter/nvim-treesitter",
+    config = function()
+      require("nvim-treesitter.configs").setup({
+        auto_install = true,
+        ensure_installed = {
+          "vimdoc",
+          "lua",
+          "vim",
+          "html",
+          "css",
+          "javascript",
+          "typescript",
+          "tsx",
+          "markdown",
+        },
+        autotag = {
+          enable = true,
+          filetypes = {
+            "html",
+            "javascript",
+            "typescript",
+            "javascriptreact",
+            "typescriptreact",
+            "svelte",
+            "vue",
+            "tsx",
+            "jsx",
+            "rescript",
+            "css",
+            "lua",
+            "xml",
+            "php",
+            "markdown",
+          },
+        },
+        indent = {
+          enable = true,
+        },
+      })
+    end,
   },
-  -- {
-  --   -- PluginNameAnchor
-  --   "nvim-treesitter/nvim-treesitter",
-  --   config = function()
-  --     require("nvim-treesitter.configs").setup({
-  --       auto_install = true,
-  --       ensure_installed = {
-  --         "vimdoc",
-  --         "lua",
-  --         "vim",
-  --         "html",
-  --         "css",
-  --         "javascript",
-  --         "typescript",
-  --         "tsx",
-  --       },
-  --       autotag = {
-  --         enable = true,
-  --         filetypes = {
-  --           "html",
-  --           "javascript",
-  --           "typescript",
-  --           "javascriptreact",
-  --           "typescriptreact",
-  --           "svelte",
-  --           "vue",
-  --           "tsx",
-  --           "jsx",
-  --           "rescript",
-  --           "css",
-  --           "lua",
-  --           "xml",
-  --           "php",
-  --           "markdown",
-  --         },
-  --       },
-  --       indent = {
-  --         enable = true,
-  --       },
-  --     })
-  --   end,
-  -- },
   {
     -- PluginNameAnchor
     "vimwiki/vimwiki",
@@ -367,13 +338,37 @@ require("lazy").setup({
   },
   {
     -- PluginNameAnchor
-    "morhetz/gruvbox",
+    "ellisonleao/gruvbox.nvim",
     init = function()
       vim.cmd("colorscheme gruvbox")
       vim.o.bg = "dark"
-      -- vim.keymap.set("n", "<Leader>bg", '<cmd>lua vim.opt.bg = vim.opt.bg:get() == "light" and "dark" or "light"<CR>')
     end,
   },
+  {
+    "catppuccin/nvim",
+    config = function()
+      require("catppuccin").setup({
+        background = {
+          light = "latte",
+          dark = "frappe",
+        },
+      })
+    end,
+  },
+  {
+    "rebelot/kanagawa.nvim",
+    config = function()
+      require("kanagawa").setup({
+        dimInactive = true, -- dim inactive window `:h hl-NormalNC`
+        theme = "wave", -- Load "wave" theme when 'background' option is not set
+        background = { -- map the value of 'background' option to a theme
+          dark = "wave", -- try "dragon" !
+          light = "lotus",
+        },
+      })
+    end,
+  },
+  { "rose-pine/neovim" },
   {
     -- PluginNameAnchor
     "lewis6991/gitsigns.nvim",
@@ -381,29 +376,39 @@ require("lazy").setup({
       require("gitsigns").setup({
         -- Define the signs used in the sign column
         signs = {
-          add = { hl = "GitSignsAdd", text = "+", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" }, -- Sign for added lines
-          change = { hl = "GitSignsChange", text = "~", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" }, -- Sign for modified lines
-          delete = {
+          add = { -- Sign for added lines
+            hl = "GitSignsAdd",
+            text = "+",
+            numhl = "GitSignsAddNr",
+            linehl = "GitSignsAddLn",
+          },
+          change = { -- Sign for modified lines
+            hl = "GitSignsChange",
+            text = "~",
+            numhl = "GitSignsChangeNr",
+            linehl = "GitSignsChangeLn",
+          },
+          delete = { -- Sign for deleted lines
             show_count = true,
             hl = "GitSignsDelete",
             text = "-",
             numhl = "GitSignsDeleteNr",
             linehl = "GitSignsDeleteLn",
-          }, -- Sign for deleted lines
-          topdelete = {
+          },
+          topdelete = { -- Sign for the topmost line of a deletion block
             show_count = true,
             hl = "GitSignsDelete",
             text = "^",
             numhl = "GitSignsDeleteNr",
             linehl = "GitSignsDeleteLn",
-          }, -- Sign for the topmost line of a deletion block
-          changedelete = {
+          },
+          changedelete = { -- Sign for changed lines that were also deleted
             show_count = true,
             hl = "GitSignsChange",
             text = "~",
             numhl = "GitSignsChangeNr",
             linehl = "GitSignsChangeLn",
-          }, -- Sign for changed lines that were also deleted
+          },
         },
 
         -- Disable the blame line by default
@@ -434,7 +439,6 @@ require("lazy").setup({
   {
     -- PluginNameAnchor
     "folke/trouble.nvim",
-
     config = function()
       require("trouble").setup({
         -- Automatically open the trouble list when diagnostics are present
@@ -460,7 +464,7 @@ require("lazy").setup({
           information = "Info",
         },
         -- Enabling this will use the signs defined in your lsp client
-        use_diagnostic_signs = false,
+        use_diagnostic_signs = true,
       })
     end,
   },
@@ -490,97 +494,97 @@ require("lazy").setup({
     -- PluginNameAnchor
     "airblade/vim-rooter",
   },
-  {
-    -- PluginNameAnchor
-    "robitx/gp.nvim",
-    config = function()
-      require("gp").setup({
-        chat_model = {
-          model = "gpt-3.5-turbo-16k",
-          temperature = 1.1,
-          top_p = 1,
-        },
-        chat_system_prompt = "You are a general AI assistant.",
-        chat_custom_instructions = "The user provided the additional info about how they would like you to respond:\n\n"
-          .. "- If you're unsure don't guess and say you don't know instead.\n"
-          .. "- Ask question if you need clarification to provide better answer.\n"
-          .. "- Think deeply and carefully from first principles step by step.\n"
-          .. "- Zoom out first to see the big picture and then zoom in to details.\n"
-          .. "- Use Socratic method to improve your thinking and coding skills.\n"
-          .. "- Don't elide any code from your output if the answer requires coding.\n"
-          .. "- Take a deep breath; You've got this!\n",
-        -- chat user prompt prefix
-        chat_user_prefix = "You:",
-        -- chat assistant prompt prefix
-        chat_assistant_prefix = "AI: ",
-        -- chat topic generation prompt
-        chat_topic_gen_prompt = "Summarize the topic of our conversation above"
-          .. " in two or three words. Respond only with those words.",
-        -- chat topic model (string with model name or table with model name and parameters)
-        chat_topic_gen_model = "gpt-3.5-turbo-16k",
-        -- explicitly confirm deletion of a chat file
-        chat_confirm_delete = true,
-        -- conceal model parameters in chat
-        chat_conceal_model_params = true,
-        -- local shortcuts bound to the chat buffer
-        -- (be careful to choose something which will work across specified modes)
-        chat_shortcut_respond = {
-          modes = { "n", "i", "v", "x" },
-          shortcut = "<C-g><C-g>",
-        },
-        chat_shortcut_delete = {
-          modes = { "n", "i", "v", "x" },
-          shortcut = "<C-g>d",
-        },
-        chat_shortcut_new = {
-          modes = { "n", "i", "v", "x" },
-          shortcut = "<C-g>n",
-        },
+  -- {
+  --   -- PluginNameAnchor
+  --   "robitx/gp.nvim",
+  --   config = function()
+  --     require("gp").setup({
+  --       chat_model = {
+  --         model = "gpt-3.5-turbo-16k",
+  --         temperature = 1.1,
+  --         top_p = 1,
+  --       },
+  --       chat_system_prompt = "You are a general AI assistant.",
+  --       chat_custom_instructions = "The user provided the additional info about how they would like you to respond:\n\n"
+  --         .. "- If you're unsure don't guess and say you don't know instead.\n"
+  --         .. "- Ask question if you need clarification to provide better answer.\n"
+  --         .. "- Think deeply and carefully from first principles step by step.\n"
+  --         .. "- Zoom out first to see the big picture and then zoom in to details.\n"
+  --         .. "- Use Socratic method to improve your thinking and coding skills.\n"
+  --         .. "- Don't elide any code from your output if the answer requires coding.\n"
+  --         .. "- Take a deep breath; You've got this!\n",
+  --       -- chat user prompt prefix
+  --       chat_user_prefix = "You:",
+  --       -- chat assistant prompt prefix
+  --       chat_assistant_prefix = "AI: ",
+  --       -- chat topic generation prompt
+  --       chat_topic_gen_prompt = "Summarize the topic of our conversation above"
+  --         .. " in two or three words. Respond only with those words.",
+  --       -- chat topic model (string with model name or table with model name and parameters)
+  --       chat_topic_gen_model = "gpt-3.5-turbo-16k",
+  --       -- explicitly confirm deletion of a chat file
+  --       chat_confirm_delete = true,
+  --       -- conceal model parameters in chat
+  --       chat_conceal_model_params = true,
+  --       -- local shortcuts bound to the chat buffer
+  --       -- (be careful to choose something which will work across specified modes)
+  --       chat_shortcut_respond = {
+  --         modes = { "n", "i", "v", "x" },
+  --         shortcut = "<C-g><C-g>",
+  --       },
+  --       chat_shortcut_delete = {
+  --         modes = { "n", "i", "v", "x" },
+  --         shortcut = "<C-g>d",
+  --       },
+  --       chat_shortcut_new = {
+  --         modes = { "n", "i", "v", "x" },
+  --         shortcut = "<C-g>n",
+  --       },
 
-        command_prompt_prefix = "🤖 ~ ",
-        command_system_prompt = "You are an AI that strictly generates just the formated final code.",
+  --       command_prompt_prefix = "🤖 ~ ",
+  --       command_system_prompt = "You are an AI that strictly generates just the formated final code.",
 
-        -- templates
-        template_selection = "I have the following code from {{filename}}:"
-          .. "\n\n```{{filetype}}\n{{selection}}\n```\n\n{{command}}",
-        template_rewrite = "I have the following code from {{filename}}:"
-          .. "\n\n```{{filetype}}\n{{selection}}\n```\n\n{{command}}"
-          .. "\n\nRespond just with the snippet of code that should be inserted.",
-        template_command = "{{command}}",
+  --       -- templates
+  --       template_selection = "I have the following code from {{filename}}:"
+  --         .. "\n\n```{{filetype}}\n{{selection}}\n```\n\n{{command}}",
+  --       template_rewrite = "I have the following code from {{filename}}:"
+  --         .. "\n\n```{{filetype}}\n{{selection}}\n```\n\n{{command}}"
+  --         .. "\n\nRespond just with the snippet of code that should be inserted.",
+  --       template_command = "{{command}}",
 
-        -- example hook functions (see Extend functionality section in the README)
-        hooks = {
-          ApplyComments = function(gp, params)
-            local template = "I have the following code from {{filename}}:\n\n"
-              .. "```{{filetype}}\n{{selection}}\n```\n\n"
-              .. "Carry out the modifications outlined in the comment(s)"
-            gp.Prompt(
-              params,
-              gp.Target.rewrite,
-              nil,
-              gp.config.command_model,
-              template,
-              gp.config.command_system_prompt
-            )
-          end,
-        },
-      })
+  --       -- example hook functions (see Extend functionality section in the README)
+  --       hooks = {
+  --         ApplyComments = function(gp, params)
+  --           local template = "I have the following code from {{filename}}:\n\n"
+  --             .. "```{{filetype}}\n{{selection}}\n```\n\n"
+  --             .. "Carry out the modifications outlined in the comment(s)"
+  --           gp.Prompt(
+  --             params,
+  --             gp.Target.rewrite,
+  --             nil,
+  --             gp.config.command_model,
+  --             template,
+  --             gp.config.command_system_prompt
+  --           )
+  --         end,
+  --       },
+  --     })
 
-      local function keymapOptions(desc)
-        return {
-          noremap = true,
-          silent = true,
-          nowait = true,
-          desc = "GPT prompt " .. desc,
-        }
-      end
+  --     local function keymapOptions(desc)
+  --       return {
+  --         noremap = true,
+  --         silent = true,
+  --         nowait = true,
+  --         desc = "GPT prompt " .. desc,
+  --       }
+  --     end
 
-      -- Chat commands
-      vim.keymap.set({ "n", "i" }, "<C-g>c", "<cmd>GpChatNew<cr>", keymapOptions("New Chat"))
-      vim.keymap.set({ "n", "i" }, "<C-g>t", "<cmd>GpChatToggle<cr>", keymapOptions("Toggle Chat"))
-      vim.keymap.set({ "n", "i" }, "<C-g>f", "<cmd>GpChatFinder<cr>", keymapOptions("Chat Finder"))
-    end,
-  },
+  --     -- Chat commands
+  --     vim.keymap.set({ "n", "i" }, "<C-g>c", "<cmd>GpChatNew<cr>", keymapOptions("New Chat"))
+  --     vim.keymap.set({ "n", "i" }, "<C-g>t", "<cmd>GpChatToggle<cr>", keymapOptions("Toggle Chat"))
+  --     vim.keymap.set({ "n", "i" }, "<C-g>f", "<cmd>GpChatFinder<cr>", keymapOptions("Chat Finder"))
+  --   end,
+  -- },
   {
     -- PluginNameAnchor
     "sindrets/diffview.nvim",
@@ -600,6 +604,22 @@ require("lazy").setup({
   {
     -- PluginNameAnchor
     "akinsho/toggleterm.nvim",
+    config = function()
+      require("toggleterm").setup({
+        direction = "float",
+        highlights = {
+          -- highlights which map to a highlight group name and a table of it's values
+          -- NOTE: this is only a subset of values, any group placed here will be set for the terminal window split
+          NormalFloat = {
+            link = "Normal",
+          },
+          FloatBorder = {
+            guifg = "#4a4a59",
+            guilbg = "#4a4a59",
+          },
+        },
+      })
+    end,
     version = "*",
     config = true,
   },
@@ -634,8 +654,8 @@ require("lazy").setup({
       vim.keymap.set("n", "<Leader>s", telescope.git_status)
       vim.keymap.set("n", "<Leader>rf", telescope.lsp_references)
       vim.keymap.set("n", "<Leader>b", telescope.buffers)
-      -- vim.keymap.set("n", "<Leader>o", telescope.oldfiles)
 
+      -- vim.keymap.set("n", "<Leader>o", telescope.oldfiles)
       -- vim.keymap.set("n", "<Leader>f", telescope.git_files)
       -- vim.keymap.set("n", "<Leader>gb", telescope.git_branches)
       -- vim.keymap.set("n", "<Leader>gst", telescope.git_stash)
@@ -650,59 +670,53 @@ require("lazy").setup({
       "BurntSushi/ripgrep",
     },
   },
-  {
-    -- PluginNameAnchor
-    "hrsh7th/nvim-cmp",
-    config = function()
-      local cmp = require("cmp")
-      cmp.setup({
-        mapping = {
-          -- Open completion menu
-          ["<C-Space>"] = cmp.mapping.complete(),
-          -- Select next item
-          ["<C-n>"] = cmp.mapping.select_next_item(),
-          -- Select previous item
-          ["<C-p>"] = cmp.mapping.select_prev_item(),
-          -- Confirm selection
-          ["<CR>"] = cmp.mapping.confirm({ select = true }),
-        },
-        sources = {
-          {
-            -- Use LSP as the completion source
-            name = "nvim_lsp",
-          },
-        },
-      })
-    end,
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-path",
-    },
-  },
+
+  -- {
+  --   -- PluginNameAnchor
+  --   "hrsh7th/nvim-cmp",
+  --   config = function()
+  --     local cmp = require("cmp")
+  --     cmp.setup({
+  --       mapping = {
+  --         -- Open completion menu
+  --         ["<C-Space>"] = cmp.mapping.complete(),
+  --         -- Select next item
+  --         ["<C-n>"] = cmp.mapping.select_next_item(),
+  --         -- Select previous item
+  --         ["<C-p>"] = cmp.mapping.select_prev_item(),
+  --         -- Confirm selection
+  --         ["<CR>"] = cmp.mapping.confirm({ select = true }),
+  --       },
+  --       sources = {
+  --         {
+  --           -- Use LSP as the completion source
+  --           name = "nvim_lsp",
+  --         },
+  --       },
+  --     })
+  --   end,
+  --   dependencies = {
+  --     "hrsh7th/cmp-nvim-lsp",
+  --     "hrsh7th/cmp-path",
+  --   },
+  -- },
   {
     -- PluginNameAnchor
     "ray-x/lsp_signature.nvim",
     event = "VeryLazy",
-    opts = {},
     config = function(_, opts)
-      require("lsp_signature").setup(opts)
+      -- require("lsp_signature").setup(opts)
+      require("lsp_signature").setup({
+        max_height = 80,
+        hint_enable = false,
+        handler_opts = {
+          border = "none", -- double, rounded, single, shadow, none, or a table of borders
+        },
+        padding = " ",
+      })
     end,
   },
-  {
-    -- PluginNameAnchor
-    "hedyhli/outline.nvim",
-    lazy = true,
-    cmd = { "Outline", "OutlineOpen" },
-    keys = { -- Example mapping to toggle outline
-      { "<Leader>o", "<cmd>Outline<CR>", desc = "Toggle outline" },
-    },
-    opts = {
-      -- Your setup opts here
-    },
-  },
 })
-
--- Custom
 
 function get_git_branch()
   local raw_branch = vim.fn.trim(vim.fn.system("git rev-parse --abbrev-ref HEAD"))
@@ -733,135 +747,93 @@ function get_file_path()
   return vim.fn.expand("~/shared-2/.branch-notes/" .. format_git_branch_name(git_branch) .. ".md")
 end
 
-function get_height_16_9(width)
-  -- 16:9 aspect ratio
-  return math.floor(width / 16) * 9
+vim.keymap.set("n", "<Leader><C-m>", "<cmd>ToggleTerm<CR>")
+
+vim.keymap.set("n", "<Leader>1", "<cmd>1ToggleTerm<CR>")
+vim.keymap.set("n", "<Leader>2", "<cmd>2ToggleTerm<CR>")
+vim.keymap.set("n", "<Leader>3", "<cmd>3ToggleTerm<CR>")
+vim.keymap.set("n", "<Leader>4", "<cmd>4ToggleTerm<CR>")
+
+vim.keymap.set("n", "<Leader>5", '<cmd>5TermExec cmd="ncmpcpp --screen=browser && exit"<CR>')
+vim.keymap.set("n", "<Leader>6", '<cmd>6TermExec cmd="nvim ' .. get_file_path() .. '"<CR>')
+vim.keymap.set("n", "<Leader>7", "<cmd>7ToggleTerm<CR>")
+vim.keymap.set("n", "<Leader>8", "<cmd>8ToggleTerm<CR>")
+vim.keymap.set("n", "<Leader>9", "<cmd>9ToggleTerm<CR>")
+
+function _G.set_terminal_keymaps()
+  local opts = { buffer = 0 }
+  vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
+  -- vim.keymap.set("t", "jk", [[<C-\><C-n>]], opts)
+  -- vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]], opts)
+  -- vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]], opts)
+  -- vim.keymap.set("t", "<C-k>", [[<Cmd>wincmd k<CR>]], opts)
+  -- vim.keymap.set("t", "<C-l>", [[<Cmd>wincmd l<CR>]], opts)
+  -- vim.keymap.set("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
 end
 
-function mergeTables(t1, t2)
-  local result = {}
+-- if you only want these mappings for toggle term use term://*toggleterm#* instead
+vim.api.nvim_create_autocmd("TermOpen", {
+  pattern = { "term://*" },
+  callback = function()
+    set_terminal_keymaps()
+  end,
+})
 
-  -- Copy key-value pairs from t1
-  for k, v in pairs(t1) do
-    result[k] = v
-  end
-
-  -- Copy key-value pairs from t2, overwriting existing keys
-  for k, v in pairs(t2) do
-    result[k] = v
-  end
-
-  return result
+function get_window_id()
+  return vim.fn.win_getid()
 end
 
-local general_popup_options = {
-  position = "50%",
-  enter = true,
-  focusable = true,
-  zindex = 50,
-  relative = "editor",
-  border = {
-    padding = {
-      top = 2,
-      bottom = 2,
-      left = 3,
-      right = 3,
-    },
-    style = "single",
-  },
-  buf_options = {
-    modifiable = true,
-    readonly = false,
-  },
-  win_options = {
-    winblend = 10,
-    winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
-  },
-  text = {
-    top_align = "center",
-    bottom_align = "left",
-  },
-  -- You can pass bufnr of an existing buffer to display it on the popup.
-  -- bufnr = vim.api.nvim_get_current_buf(),
-}
-
--- text = {
--- top = "Branch notes", -- (" .. get_git_branch() .. ")",
---   top_align = "center",
--- bottom = formatGitBranchName(get_git_branch()),
---   bottom_align = "left",
--- }
-
-local Popup = require("nui.popup")
-function open_popup(command, popup_options)
-  local neovim_width = (vim.api.nvim_get_option_value("columns", {}))
-  local popup_width = math.floor(neovim_width * 0.8)
-  local popup_height = math.floor(get_height_16_9(popup_width) / 2.5) -- looks like columns and lines values are not equal
-
-  size = {
-    width = popup_width,
-    height = popup_height,
-  }
-
-  local popup_options = mergeTables(general_popup_options, {
-    size = size,
-  })
-
-  local popup = Popup(popup_options)
-
-  popup:mount()
-
-  if command then
-    vim.cmd(command)
-    if string.sub(command, 1, 3) == "ter" then
-      -- vim.api.nvim_open_term
-      vim.api.nvim_feedkeys("a", "n", true)
-    end
-  else
-    vim.cmd('terminal echo "No command provided. Terminal opened."')
-  end
-
-  -- Events
-
-  -- local ok = popup:map("n", "<esc>", function(bufnr)
-  --   print("ESC pressed in Normal mode!")
-  -- end, { noremap = true })
-
-  local event = require("nui.utils.autocmd").event
-  -- popup:on({ event.BufLeave }, function()
-  --   popup:unmount()
-  -- end, { once = true })
-
-  -- unmount component when cursor leaves buffer
-  popup:on(event.BufLeave, function()
-    popup:unmount()
-  end)
-
-  -- vim.api.nvim_create_autocmd({ "WinClosed" }, {
-  --   pattern = { "*" },
-  --   callback = function()
-  --     popup:unmount()
-  --     return true -- Remove the autocmd
-  --   end,
-  -- })
+function focus_window(window_id)
+  vim.api.nvim_set_current_win(window_id)
 end
 
--- General terminal
-vim.keymap.set("n", "<Leader><Leader>", function()
-  open_popup("terminal")
-end)
+function write_and_close_current_window()
+  vim.cmd(":wq")
+end
 
--- Pomodoro (ncmpcpp)
-vim.keymap.set("n", "<Leader>p", function()
-  open_popup("terminal ncmpcpp -s browser")
-end)
+function create_vertical_split()
+  -- vim.cmd("bo 56vsp " .. get_file_path())
+  vim.api.nvim_command("bo 56vsp") -- move to nvim_cmd
+  vim.cmd("set winfixwidth") -- Fix the width of the window
+  vim.cmd("wincmd =") -- Equalize windows
+  vim.cmd("set nonumber")
+  vim.cmd("set norelativenumber")
+  vim.cmd("e " .. get_file_path())
 
--- Global notes
-vim.keymap.set("n", "<Leader>m", function()
-  open_popup("e ~/shared-2/.branch-notes/.global-notes.md")
-end)
+  return get_window_id()
+end
 
--- Branch notes
-vim.keymap.set("n", "<Leader>n", function()
-  open_popup("e " .. get_file_path())
-end)
+function ToggleVerticalSplit(file_path)
+  -- vim.g.right_split_content = file_path
+  local there_is_no_split = vim.g.vertical_split_window_id == nil
+
+  if there_is_no_split then
+    vim.g.vertical_split_window_id = create_vertical_split()
+
+    vim.api.nvim_create_autocmd({ "WinClosed" }, {
+      pattern = { "*" },
+      callback = function()
+        -- We don't want to exex the callback if it's not the split we opened
+        if vim.g.vertical_split_window_id ~= get_window_id() then
+          return false
+        end
+        vim.g.vertical_split_window_id = nil
+        return true -- Remove the autocmd
+      end,
+    })
+    return
+  end
+
+  -- break the rules: add to garden new way of naming booleans (that is good with if conditionals)
+  local split_is_in_focus = vim.g.vertical_split_window_id == get_window_id()
+
+  if split_is_in_focus then
+    write_and_close_current_window()
+    vim.g.vertical_split_window_id = nil
+    return
+  end
+
+  focus_window(vim.g.vertical_split_window_id)
+end
+
+vim.keymap.set("n", "<C-n>", ":lua ToggleVerticalSplit()<CR>", { noremap = true, silent = true })
