@@ -656,16 +656,16 @@ require("lazy").setup({
       vim.keymap.set("n", "<Leader>rf", telescope.lsp_references)
       vim.keymap.set("n", "<Leader>b", telescope.buffers)
 
-      -- vim.keymap.set("n", "<Leader>o", telescope.oldfiles)
+      vim.keymap.set("n", "<Leader>o", telescope.oldfiles)
       -- vim.keymap.set("n", "<Leader>f", telescope.git_files)
       -- vim.keymap.set("n", "<Leader>gb", telescope.git_branches)
       -- vim.keymap.set("n", "<Leader>gst", telescope.git_stash)
       -- vim.keymap.set("n", "<Leader>d", telescope.diagnostics)
       -- vim.keymap.set("n", "<Leader>i", telescope.lsp_implementations)
       -- vim.keymap.set('n', '<Leader>td', telescope.lsp_type_definitions)
-      -- vim.keymap.set("n", "<Leader>vc", telescope.commands)
-      -- vim.keymap.set("n", "<Leader>vo", telescope.vim_options)
-      -- vim.keymap.set("n", "<Leader>?", telescope.keymaps)
+      vim.keymap.set("n", "<Leader>vc", telescope.commands)
+      vim.keymap.set("n", "<Leader>vo", telescope.vim_options)
+      vim.keymap.set("n", "<Leader>?", telescope.keymaps)
     end,
     dependencies = {
       "BurntSushi/ripgrep",
