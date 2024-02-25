@@ -224,6 +224,7 @@ require("lazy").setup({
           b.formatting.prettier.with({
             extra_filetypes = {
               "svelte",
+              "vimwiki",
             },
           }),
         },
